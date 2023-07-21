@@ -1,14 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Book` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "Book";
-
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "createdAT" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -17,17 +8,24 @@ CREATE TABLE "User" (
     "firstName" TEXT,
     "lastName" TEXT,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Bookmark" (
+CREATE TABLE "bookmarks" (
     "id" SERIAL NOT NULL,
     "createdAT" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" TEXT NOT NULL,
     "link" TEXT NOT NULL,
     "description" TEXT,
+    "userId" INTEGER NOT NULL,
 
-    CONSTRAINT "Bookmark_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "bookmarks_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- AddForeignKey
+ALTER TABLE "bookmarks" ADD CONSTRAINT "bookmarks_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
